@@ -58,7 +58,7 @@ client.on('interactionCreate', async interaction => {
 		let Embed2 = new EmbedBuilder()
 		.setColor("Blue")
 		.setTitle("Verification")
-		.setDescription('link: ' + 'http://localhost:8080/user/' + interaction.user.id);
+		.setDescription('link: ' + 'https://wever-verification.herokuapp.com/user/' + interaction.user.id);
 
 		if (interaction.member.guild.roles.cache.find(role => role.name === "verified")) {
 		} else {
