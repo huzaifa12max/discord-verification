@@ -26,10 +26,14 @@ client.once('ready', () => {
 })
 
 client.on("guildCreate", guild => {
-    const commands = [
+	const commands = [
 		new SlashCommandBuilder().setName('verify').setDescription('Sends you a verification link.'),
 		new SlashCommandBuilder().setName('help').setDescription('Replies with Commands.'),
-		new SlashCommandBuilder().setName('setrole').setDescription('Set verification role.'),
+		new SlashCommandBuilder().setName('panel').setDescription('Set verification panel.').addSubcommand(subcommand =>
+			subcommand
+				.setName('channel')
+				.setDescription('The channel name')
+				.addChannelOption(option => option.setName('target').setDescription('The channel'))),
 	]
 		.map(command => command.toJSON());
 
