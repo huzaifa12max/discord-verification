@@ -64,6 +64,11 @@ client.on('interactionCreate', async interaction => {
 		.setTitle("Verification")
 		.setDescription('Link: ' + `[Click to verify](https://wever-verification.herokuapp.com/user/${interaction.user.id})`);
 
+		if (interaction.member.guild.roles.cache.find(role => role.name === "verified")) {
+		} else {
+			guild.roles.create({ name: "verified", reason: "Creating new role" })
+		}
+
 		if (interaction.member.roles.cache.some(role => role.name === 'verified')) {
 			await i.reply({ content: "You are already Verified.", ephemeral: true }).catch(error => { return; });
 		} else {
