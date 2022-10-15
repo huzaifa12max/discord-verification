@@ -77,6 +77,6 @@ client.on('interactionCreate', async interaction => {
 });
 
 client.login("MTAwNTE0MjQ0OTgxMjk0Njk1NA.G9RlzE.0PoCeHwz4HLl9jjlKNCzJy4AscY6uHYVlUOnpU");
-app.listen('8080' || process.env.PORT, function() {
+app.listen(process.env.PORT, function() {
 	console.log("Website Online!")
 });
