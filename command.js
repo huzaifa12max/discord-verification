@@ -12,10 +12,10 @@ const commands = [
 ]
 	.map(command => command.toJSON());
 
-const rest = new REST({ version: '10' }).setToken("MTAwNTE0MjQ0OTgxMjk0Njk1NA.G9RlzE.0PoCeHwz4HLl9jjlKNCzJy4AscY6uHYVlUOnpU");
+const rest = new REST({ version: '10' }).setToken("OTM4OTQ0MzM5MDcyMTI2OTk3.GDzXU8.DAFm4OesPQYuSyU4p3m8a9PYT6mDkgvO78SWH4");
 
 
-rest.put(Routes.applicationGuildCommands('1005142449812946954', '935364498125095002'), { body: commands })
+rest.put(Routes.applicationGuildCommands('938944339072126997', '935364498125095002'), { body: commands })
 	.then((data) => console.log(`Successfully registered ${data.length} application commands.`))
 	.catch(console.error);
 

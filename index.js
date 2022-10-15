@@ -32,11 +32,11 @@ client.on("guildCreate", guild => {
 		new SlashCommandBuilder().setName('setrole').setDescription('Set verification role.'),
 	]
 		.map(command => command.toJSON());
-	
-	const rest = new REST({ version: '10' }).setToken("MTAwNTE0MjQ0OTgxMjk0Njk1NA.G9RlzE.0PoCeHwz4HLl9jjlKNCzJy4AscY6uHYVlUOnpU");
-	
-	
-	rest.put(Routes.applicationGuildCommands('1005142449812946954', guild.id.toString()), { body: commands })
+
+	const rest = new REST({ version: '10' }).setToken("OTM4OTQ0MzM5MDcyMTI2OTk3.GDzXU8.DAFm4OesPQYuSyU4p3m8a9PYT6mDkgvO78SWH4");
+
+
+	rest.put(Routes.applicationGuildCommands('938944339072126997', guild.id.toString()), { body: commands })
 		.catch(console.error);
 })
 
@@ -53,7 +53,7 @@ client.on('interactionCreate', async interaction => {
 	const filter = i => i.customId === 'success' && i.user.id === interaction.user.id;
 
 	const collector = interaction.channel.createMessageComponentCollector({ filter, time: 15000 });
-	
+
 	collector.on('collect', async i => {
 		let Embed22 = new EmbedBuilder()
 		.setColor("Blue")
@@ -154,7 +154,7 @@ client.on('interactionCreate', async interaction => {
 
 });
 
-client.login("MTAwNTE0MjQ0OTgxMjk0Njk1NA.G9RlzE.0PoCeHwz4HLl9jjlKNCzJy4AscY6uHYVlUOnpU");
+client.login("OTM4OTQ0MzM5MDcyMTI2OTk3.GDzXU8.DAFm4OesPQYuSyU4p3m8a9PYT6mDkgvO78SWH4");
 app.listen(process.env.PORT, function() {
 	console.log("Website Online!")
 });
