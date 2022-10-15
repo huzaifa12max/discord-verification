@@ -66,7 +66,7 @@ client.on('interactionCreate', async interaction => {
 
 		if (interaction.member.guild.roles.cache.find(role => role.name === "verified")) {
 		} else {
-			guild.roles.create({ name: "verified", reason: "Creating new role" })
+			interaction.guild.roles.create({ name: "verified", reason: "Creating new role" })
 		}
 
 		if (interaction.member.roles.cache.some(role => role.name === 'verified')) {
@@ -111,7 +111,7 @@ client.on('interactionCreate', async interaction => {
 
 		if (interaction.member.guild.roles.cache.find(role => role.name === "verified")) {
 		} else {
-			guild.roles.create({ name: "verified", reason: "Creating new role" })
+			interaction.guild.roles.create({ name: "verified", reason: "Creating new role" })
 		}
 
 		if (interaction.member.roles.cache.some(role => role.name === 'verified')) {
