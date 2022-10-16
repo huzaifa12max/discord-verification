@@ -73,7 +73,6 @@ client.on('interactionCreate', async interaction => {
 	if (!interaction.isChatInputCommand()) return;
 
 	if (interaction.member.roles.cache.some(role => role.name === 'verified')) {
-	} else {
 		Datastore.findOne({ guild_id: interaction.guild.id }, function (err,docs) {
 			if (err) {
 				return;
@@ -87,6 +86,7 @@ client.on('interactionCreate', async interaction => {
 				channel.send({ embeds: [embe] });
 			}
 		})
+	} else {
 	}
 
 	const filter = i => i.customId === 'success' && i.user.id === interaction.user.id;
