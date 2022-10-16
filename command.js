@@ -9,6 +9,11 @@ const commands = [
 			.setName('channel')
 			.setDescription('The channel name')
 			.addChannelOption(option => option.setName('target').setDescription('The channel'))),
+	new SlashCommandBuilder().setName('logs').setDescription('Sets logging channel').addSubcommand(subcommand =>
+		subcommand
+			.setName('channel')
+			.setDescription('The channel name')
+			.addChannelOption(option => option.setName('target').setDescription('The channel'))),
 ]
 	.map(command => command.toJSON());
 

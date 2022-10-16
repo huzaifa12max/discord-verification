@@ -4,11 +4,14 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const fs = require('fs');
 const app = express();
-const { Client, GatewayIntentBits, EmbedBuilder, Collection, ActionRowBuilder, ButtonBuilder, ButtonStyle  } = require('discord.js');
+const { Client, GatewayIntentBits, EmbedBuilder, Collection, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionsBitField   } = require('discord.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 const command = require('./command.js');
 const { REST, SlashCommandBuilder, Routes } = require('discord.js');
-
+const mongoose = require("mongoose");
+const Database = 'mongodb+srv://huzaifa:siddique@cluster0.socueya.mongodb.net/?retryWrites=true&w=majority';
+const Datastore = require("./Scheme/Datastore.js");
+const { findOneAndReplace } = require("./Scheme/Datastore.js");
 
 app.set('view engine', 'ejs');
 app.use(express.static("./public/static"));
@@ -19,11 +22,21 @@ app.use(
   }),
 );
 
+if(!Database) return;
+mongoose.connect(Database, {
+	useNewUrlParser: true,
+	useUnifiedTopology: true
+}).then(() => {
+	console.log('The Database has connected!')
+}).catch((err) => {
+	console.log(err)
+});
 
 
 client.once('ready', () => {
     console.log(`${client.user.username} is online!`)
 })
+
 
 client.on("guildCreate", guild => {
 	const commands = [
@@ -34,6 +47,11 @@ client.on("guildCreate", guild => {
 				.setName('channel')
 				.setDescription('The channel name')
 				.addChannelOption(option => option.setName('target').setDescription('The channel'))),
+		new SlashCommandBuilder().setName('logs').setDescription('Sets logging channel').addSubcommand(subcommand =>
+		subcommand
+			.setName('channel')
+			.setDescription('The channel name')
+			.addChannelOption(option => option.setName('target').setDescription('The channel'))),
 	]
 		.map(command => command.toJSON());
 
@@ -42,7 +60,7 @@ client.on("guildCreate", guild => {
 
 	rest.put(Routes.applicationGuildCommands('938944339072126997', guild.id.toString()), { body: commands })
 		.catch(console.error);
-})
+});
 
 
 
@@ -115,6 +133,20 @@ client.on('interactionCreate', async interaction => {
 		}
 
 		if (interaction.member.roles.cache.some(role => role.name === 'verified')) {
+			Datastore.findOne({ guild_id: interaction.guild.id }, function (err,docs) {
+				if (err) {
+					return;
+				} else if(docs) {
+					let embe = new EmbedBuilder()
+					.setColor("Blue")
+					.setTitle("Verified")
+					.setDescription(`<@${interaction.user.id}> has been Verified. More info: [Link](https://wever-verification.herokuapp.com/user/${interaction.user.id})`)
+				
+					const channel = client.channels.cache.get(docs.channel_id.toString());
+					channel.send({ embeds: [embe] });
+				}
+			})
+
 			await interaction.reply({ content: "You are already Verified.", ephemeral: true }).catch(error => { return; });
 		} else {
 			client.users.send(interaction.user.id, { embeds: [Embed2] }).catch(error => { return; });
@@ -130,11 +162,13 @@ client.on('interactionCreate', async interaction => {
 		.addFields(
 			{ name: 'Verify', value: 'Verify users.', inline: true },
 			{ name: 'Panel', value: "Creates Verification panel.", inline: true },
+			{ name: 'Logs', value: "Sets the logs channel.", inline: true },
 		);
 	
 		interaction.reply({ embeds: [helpEmb] });
 	} else if (commandName === 'panel') {
-		if (interaction.options.getSubcommand() === 'channel') {
+		if(interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
+			if (interaction.options.getSubcommand() === 'channel') {
 				try {
 					let channel = interaction.options.getChannel('target');
 					if(channel.id) {
@@ -150,7 +184,7 @@ client.on('interactionCreate', async interaction => {
 								.setLabel('Verify')
 								.setStyle(ButtonStyle.Success),
 						);
-						
+
 						let channel2 = client.channels.cache.get(channel.id);
 						channel2.send({ embeds: [exampleEmbed], components: [row] });
 					}
@@ -158,10 +192,59 @@ client.on('interactionCreate', async interaction => {
 					return;
 				}
 			}
+		} else {
+			interaction.reply({ content: "You do not have permission to use this command!", ephemeral: true }).catch(error => { return; })
+		}
+	} else if (commandName === "logs") {
+		if(interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
+			if (interaction.options.getSubcommand() === 'channel') {
+				try {
+					let channel = interaction.options.getChannel('target');
+						var log_channel = new Datastore({
+							guild_id: interaction.guild.id,
+							channel_id: channel.id
+						});
+
+						Datastore.findOne({ guild_id: interaction.guild.id }, function(err, docs) {
+							if (docs) {
+								Datastore.findOneAndUpdate({ guild_id: interaction.guild.id },
+									{channel_id: channel.id}, null, function (err, docs) {
+									if (err){
+										console.log(err)
+									}
+									else{
+										interaction.reply({ content: `Log channel updated to <#${channel.id}>.`, ephemeral: true })
+									}
+								});
+							} else if(err) {
+								console.log(err)
+							} else {
+								log_channel.save();
+								interaction.reply({ content: `Log channel set to <#${channel.id}>.`, ephemeral: true })
+							}
+						})
+
+						/*if(Datastore.findOne({ guild_id: interaction.guild.id })) {
+							interaction.reply({ content: `Log channel updated to <#${channel.id}>.`, ephemeral: true })
+						} else {
+							log_channel.save();
+							interaction.reply({ content: `Log channel set to <#${channel.id}>.`, ephemeral: true })
+						} */
+
+
+				} catch(e) {
+					return;
+				}
+			}
+	} else {
+		interaction.reply({ content: "You do not have permission to use this command!", ephemeral: true }).catch(error => { return; })
 	}
+}
 
 
 });
+
+
 
 client.login("OTM4OTQ0MzM5MDcyMTI2OTk3.GDzXU8.DAFm4OesPQYuSyU4p3m8a9PYT6mDkgvO78SWH4");
 app.listen(process.env.PORT, function() {
