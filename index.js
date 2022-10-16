@@ -72,22 +72,6 @@ app.get('/', (req,res) => {
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isChatInputCommand()) return;
 
-	if (interaction.member.roles.cache.some(role => role.name === 'verified')) {
-		Datastore.findOne({ guild_id: interaction.guild.id }, function (err,docs) {
-			if (err) {
-				return;
-			} else if(docs) {
-				let embe = new EmbedBuilder()
-				.setColor("Blue")
-				.setTitle("Verified")
-				.setDescription(`<@${interaction.user.id}> has been Verified. More info: [Link](https://wever-verification.herokuapp.com/user/${interaction.user.id})`)
-
-				const channel = client.channels.cache.get(docs.channel_id.toString());
-				channel.send({ embeds: [embe] });
-			}
-		})
-	} else {
-	}
 
 	const filter = i => i.customId === 'success' && i.user.id === interaction.user.id;
 
@@ -119,7 +103,23 @@ client.on('interactionCreate', async interaction => {
 			interaction.guild.members.cache.get(interaction.user.id).roles.add(role).catch(error => { console.log(error) });
 
 
-
+			if (interaction.member.roles.cache.some(role => role.name === 'verified')) {
+				Datastore.findOne({ guild_id: interaction.guild.id }, function (err,docs) {
+					if (err) {
+						return;
+					} else if(docs) {
+						let embe = new EmbedBuilder()
+						.setColor("Blue")
+						.setTitle("Verified")
+						.setDescription(`<@${interaction.user.id}> has been Verified.`)
+		
+						const channel = client.channels.cache.get(docs.channel_id.toString());
+						channel.send({ embeds: [embe] });
+					}
+				})
+			} else {
+			}
+		
 
 	/*	if (interaction.member.roles.cache.find(r => r.name === "verified")) {
 		} else {
