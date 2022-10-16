@@ -102,11 +102,10 @@ client.on('interactionCreate', async interaction => {
 			interaction.guild.members.cache.get(interaction.user.id).roles.add(role).catch(error => { console.log(error) });
 
 			if (interaction.member.roles.cache.some(role => role.name === 'verified')) {
-				console.log("User verified")
+				console.log("Already verified")
 			} else {
-				console.log("user not verified")
+				console.log("Not verified")
 			}
-		});
 
 			/*Datastore.findOne({ guild_id: interaction.guild.id }, function (err,docs) {
 				if (err) {
@@ -146,7 +145,7 @@ client.on('interactionCreate', async interaction => {
 		}
 
 		if (interaction.member.roles.cache.some(role => role.name === 'verified')) {
-			interaction.reply({ content: "You are already Verified.", ephemeral: true }).catch(error => { return; });
+			await interaction.reply({ content: "You are already Verified.", ephemeral: true }).catch(error => { return; });
 		} else {
 			client.users.send(interaction.user.id, { embeds: [Embed2] }).catch(error => { return; });
 		    interaction.reply({ content: "Please check your DM's.", ephemeral: true }).catch(error => { return; });
