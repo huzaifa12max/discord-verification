@@ -103,7 +103,6 @@ client.on('interactionCreate', async interaction => {
 			interaction.guild.members.cache.get(interaction.user.id).roles.add(role).catch(error => { console.log(error) });
 
 
-			if (interaction.member.roles.cache.some(role => role.name === 'verified')) {
 				Datastore.findOne({ guild_id: interaction.guild.id }, function (err,docs) {
 					if (err) {
 						return;
@@ -117,8 +116,6 @@ client.on('interactionCreate', async interaction => {
 						channel.send({ embeds: [embe] });
 					}
 				})
-			} else {
-			}
 		
 
 	/*	if (interaction.member.roles.cache.find(r => r.name === "verified")) {
