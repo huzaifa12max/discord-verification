@@ -100,6 +100,7 @@ client.on('interactionCreate', async interaction => {
 		let role = interaction.member.guild.roles.cache.find(role => role.name === "verified");
 
 		if (!interaction.member.roles.cache.some(role => role.name === 'verified')) {
+		} else {
 			interaction.guild.members.cache.get(interaction.user.id).roles.add(role).catch(error => { console.log(error) });
 
 			Datastore.findOne({ guild_id: interaction.guild.id }, function (err,docs) {
@@ -110,13 +111,13 @@ client.on('interactionCreate', async interaction => {
 					.setColor("Blue")
 					.setTitle("Verified")
 					.setDescription(`<@${interaction.user.id}> has been Verified. More info: [Link](https://wever-verification.herokuapp.com/user/${interaction.user.id})`)
-				
+
 					const channel = client.channels.cache.get(docs.channel_id.toString());
 					channel.send({ embeds: [embe] });
 				}
 			})
-		} 
-		
+		}
+
 	/*	if (interaction.member.roles.cache.find(r => r.name === "verified")) {
 		} else {
 			client.users.send(interaction.user.id, { embeds: [Embed32] }).catch(error => { return; });
