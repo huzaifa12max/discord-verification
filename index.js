@@ -65,7 +65,7 @@ client.on("guildCreate", guild => {
 
 
 app.get('/', (req,res) => {
-	res.send("test")
+	res.render("home.ejs");
 })
 
 
