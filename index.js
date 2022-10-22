@@ -146,12 +146,9 @@ client.on('interactionCreate', async interaction => {
 		} else {
 				//client.users.send(interaction.user.id, { embeds: [Embed2] })
 
-				if(interaction.user.send({ embeds: [Embed2] })) {
-					interaction.user.send({ embeds: [Embed2] })
+				interaction.user.send({ embeds: [Embed2] }).catch(error => { interaction.channel.send({ content: "Please open your DM's in order to Verify.", ephemeral: true }) })
 				interaction.reply({ content: "Please check your DM's.", ephemeral: true })
-				} else {
-					interaction.reply({ content: "Please open your DM's in order to Verify.", ephemeral: true })
-				}
+
 
 		}
 
