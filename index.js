@@ -144,12 +144,7 @@ client.on('interactionCreate', async interaction => {
 		if (interaction.member.roles.cache.some(role => role.name === 'verified')) {
 			await interaction.reply({ content: "You are already Verified.", ephemeral: true }).catch(error => { return; });
 		} else {
-			try {
-				client.users.send(interaction.user.id, { embeds: [Embed2] });
-				interaction.reply({ content: "Please check your DM's.", ephemeral: true });
-			} catch(e) {
-				interaction.reply({ content: "Please open your DM's in order to Verify.", ephemeral: true });
-			}
+				client.users.send(interaction.user.id, { embeds: [Embed2] }).then(interaction.reply({ content: "Please check your DM's.", ephemeral: true }));
 		}
 
 
