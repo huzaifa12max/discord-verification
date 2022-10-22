@@ -146,7 +146,7 @@ client.on('interactionCreate', async interaction => {
 		} else {
 				//client.users.send(interaction.user.id, { embeds: [Embed2] })
 
-				interaction.user.send({ embeds: [Embed2] }).catch(error => { interaction.reply({ content: "Please open your DM's in order to Verify.", ephemeral: true }); return; }).then(interaction.reply({ content: "Please check your DM's.", ephemeral: true }));
+				interaction.user.send({ embeds: [Embed2] }).catch(error => { interaction.reply({ content: "Please open your DM's in order to Verify.", ephemeral: true }); break; }).then(interaction.reply({ content: "Please check your DM's.", ephemeral: true }));
 				//interaction.reply({ content: "Please check your DM's.", ephemeral: true })
 
 
