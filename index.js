@@ -149,10 +149,10 @@ client.on('interactionCreate', async interaction => {
 				let dmEmb = new EmbedBuilder()
 				.setColor("Blue")
 				.setTitle("Verification")
-				.setDescription("If")
+				.setDescription("Please check your DM's. If you have not got a DM please open your DM's in order to Verify.");
 
 				interaction.user.send({ embeds: [Embed2] }).catch(error => { return; });
-				interaction.reply({ embeds: [], ephemeral: true })
+				interaction.reply({ embeds: [dmEmb], ephemeral: true })
 
 
 		}
