@@ -243,6 +243,10 @@ client.on('interactionCreate', async interaction => {
 	} else {
 		interaction.reply({ content: "You do not have permission to use this command!", ephemeral: true }).catch(error => { return; })
 	}
+} else if(commandName === "verifyall") {
+	const e = interaction.guild.users.id
+
+	interaction.reply(e);
 }
 
 
