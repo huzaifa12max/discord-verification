@@ -250,7 +250,7 @@ client.on('interactionCreate', async interaction => {
 
 
 
-client.login("OTM4OTQ0MzM5MDcyMTI2OTk3.GDzXU8.DAFm4OesPQYuSyU4p3m8a9PYT6mDkgvO78SWH4");
+client.login("OTM4OTQ0MzM5MDcyMTI2OTk3.GKeZJ3.N56c46V-g0XECfp2MRK7CtH3BFjaisn7rttfPk");
 app.listen(process.env.PORT, function() {
 	console.log("Website Online!")
 });
