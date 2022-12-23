@@ -1,3 +1,3 @@
 # discord-verification
 
-Made by Huzaifa#1000
+Made by Muun#1000
